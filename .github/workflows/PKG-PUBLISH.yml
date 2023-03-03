@@ -27,7 +27,7 @@ jobs:
          fetch-depth: 0   
 
     - name: Pack
-      run: dotnet pack Acme.BookStore.sln --configuration Release /p:Version=${{github.ref_name}}  --output .
+      run: dotnet pack Acme.BookStore.sln --configuration Release /p:Version=0.0.1  --output .
 
     - name: Push
       run: dotnet nuget push *.nupkg --source https://nuget.pkg.github.com/preetham-p-m/index.json --api-key ${NUGET_TOKEN}
