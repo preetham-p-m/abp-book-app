@@ -1,0 +1,34 @@
+name: PKG-PUBLISH
+on: 
+  push:
+    tags:
+    - "[0-9]+.[0-9]+.[0-9]"
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write 
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+          dotnet-version: 6.0.x 
+
+    - name: Check out Code
+      uses: actions/checkout@v3.3
+      with:
+         fetch-depth: 0   
+
+    - name: Pack
+      run: dotnet pack Acme.BookStore.sln --configuration Release /p:Version=${{github.ref_name}}  --output .
+
+    - name: Push
+      run: dotnet nuget push *.nupkg --source https://nuget.pkg.github.com/preetham-p-m/index.json --api-key ${NUGET_TOKEN}
+      env:
+        NUGET_TOKEN: ${{ secrets.ABP_BOOK_APP_TOKEN  }}
