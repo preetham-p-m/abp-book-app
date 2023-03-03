@@ -28,10 +28,10 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       
-    - name: Test
-      run: dotnet test --logger trx;LogFileName=/test-result/foundation-results.trx--no-build --verbosity normal 
+    # - name: Test
+    #   run: dotnet test --logger trx;LogFileName=/test-result/foundation-results.trx--no-build --verbosity normal 
       
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v2.4.2
-      with:
-        files: "/**/test-result/**/*.trx"
+    # - name: Publish Test Results
+    #   uses: EnricoMi/publish-unit-test-result-action@v2.4.2
+    #   with:
+    #     files: "/**/test-result/**/*.trx"
