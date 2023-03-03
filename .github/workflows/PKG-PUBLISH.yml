@@ -7,6 +7,7 @@ on:
         required: true 
       description:
         description: "Version update Message"
+        type: string
 
     tags:
     - "[0-9]+.[0-9]+.[0-9]"
@@ -27,6 +28,9 @@ jobs:
       with:
           dotnet-version: 6.0.x 
 
+    - name: Setup NuGet.exe for use with actions
+      uses: NuGet/setup-nuget@v1.1.1
+
     - name: Check out Code
       uses: actions/checkout@v3
       with:
@@ -36,6 +40,6 @@ jobs:
       run: dotnet pack Acme.BookStore.sln --configuration Release /p:Version=${{ inputs.tag }}  --output .
 
     - name: Push
-      run: dotnet nuget push *.nupkg --source https://nuget.pkg.github.com/preetham-p-m/index.json --api-key ${NUGET_TOKEN} -Description ${{ inputs.description }}
+      run: nuget push *.nupkg -Source https://nuget.pkg.github.com/preetham-p-m/index.json -ApiKey ${NUGET_TOKEN} -Description ${{ inputs.description }}
       env:
         NUGET_TOKEN: ${{ secrets.ABP_BOOK_APP_TOKEN  }}
